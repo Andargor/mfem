@@ -701,6 +701,30 @@ static void PADiffusionAssembleDiagonal(const int dim,
                                         const Vector &D,
                                         Vector &Y)
 {
+#ifdef MFEM_USE_CEED
+   if (DeviceCanUseCeed())
+   {
+      CeedScalar *d_ptr;
+      CeedMemType mem;
+      CeedGetPreferredMemType(internal::ceed, &mem);
+      if ( Device::Allows(Backend::CUDA) && mem==CEED_MEM_DEVICE )
+      {
+         d_ptr = D.ReadWrite();
+      }
+      else
+      {
+         d_ptr = D.HostReadWrite();
+         mem = CEED_MEM_HOST;
+      }
+      CeedVectorSetArray(ceedDataPtr->v, mem, CEED_USE_POINTER, d_ptr);
+
+      CeedOperatorLinearAssembleDiagonal(ceedDataPtr->oper, ceedDataPtr->v,
+                                         CEED_REQUEST_IMMEDIATE);
+
+      CeedVectorSyncArray(ceedDataPtr->v, mem);
+   }
+   else
+#endif
    if (dim == 2)
    {
       switch ((D1D << 4 ) | Q1D)
