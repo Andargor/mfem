@@ -718,8 +718,8 @@ static void PADiffusionAssembleDiagonal(const int dim,
       }
       CeedVectorSetArray(ceedDataPtr->v, mem, CEED_USE_POINTER, d_ptr);
 
-      CeedOperatorLinearAssembleDiagonal(ceedDataPtr->oper, ceedDataPtr->v,
-                                         CEED_REQUEST_IMMEDIATE);
+      CeedOperatorLinearAssembleAddDiagonal(ceedDataPtr->oper, ceedDataPtr->v,
+                                            CEED_REQUEST_IMMEDIATE);
 
       CeedVectorSyncArray(ceedDataPtr->v, mem);
    }
