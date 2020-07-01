@@ -427,8 +427,8 @@ static void PAMassAssembleDiagonal(const int dim, const int D1D,
                                             CEED_REQUEST_IMMEDIATE);
 
       CeedVectorSyncArray(ceedDataPtr->v, mem);
+      return;
    }
-   else
 #endif
    if (dim == 2)
    {

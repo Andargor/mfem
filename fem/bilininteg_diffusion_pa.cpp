@@ -722,8 +722,8 @@ static void PADiffusionAssembleDiagonal(const int dim,
                                             CEED_REQUEST_IMMEDIATE);
 
       CeedVectorSyncArray(ceedDataPtr->v, mem);
+      return;
    }
-   else
 #endif
    if (dim == 2)
    {
